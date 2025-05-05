@@ -1,0 +1,29 @@
+<form
+  [formGroup]="feedbackForm"
+  class="feedback-form"
+  (ngSubmit)="submitForm()">
+  <legend class="feedback-form--title">Tell us what you think</legend>
+  <input
+    class="feedback-form--control"
+    formControlName="name"
+    placeholder="Name"
+    type="text" />
+  <input
+    class="feedback-form--control"
+    formControlName="email"
+    placeholder="Email"
+    type="email" />
+  <app-rating-control formControlName="rating" />
+  <textarea
+    class="feedback-form--control"
+    formControlName="comment"
+    placeholder="Сomment text"></textarea>
+  <button
+    class="feedback-form--submit"
+    type="submit"
+    [disabled]="
+      !feedbackForm.touched || feedbackForm.invalid
+    ">
+    Submit
+  </button>
+</form>

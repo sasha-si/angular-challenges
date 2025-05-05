@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {SidenavComponent} from './sidenav/sidenav.component';
+import {ChallengesComponent} from './challenges/challenges.component';
 
 @Component({
+  imports: [
+    SidenavComponent, 
+    ChallengesComponent, 
+  ],
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.less'
+  styleUrls: ['./app.component.less'],
+  standalone: true,
 })
 export class AppComponent {
   title = 'angular-challenges';
