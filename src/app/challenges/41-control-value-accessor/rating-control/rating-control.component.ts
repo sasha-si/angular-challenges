@@ -16,12 +16,13 @@ export class RatingControlComponent implements ControlValueAccessor {
   value: number | null = null;
 
   private _onChange = (value: number) => {};
-  private _onTouched = () => {};//unused due to particularity of the control of the form
+  private _onTouched = () => {};
 
 
   setRating(index: number): void {
     this.writeValue(index + 1);
     this._onChange(index + 1);
+    this._onTouched();
   }
 
   isStarActive(index: number, value: number | null): boolean {

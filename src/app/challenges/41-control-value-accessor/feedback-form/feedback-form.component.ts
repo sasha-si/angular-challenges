@@ -19,15 +19,9 @@ import { RatingControlComponent } from '../rating-control/rating-control.compone
 })
 export class FeedbackFormComponent {
   readonly feedbackForm = new FormGroup({
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-    }),
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
-    }),
-    rating: new FormControl('', {
-      validators: Validators.required,
-    }),
+    name: new FormControl('', {validators: [Validators.required, Validators.minLength(3)]}),
+    email: new FormControl('', {validators: [Validators.required, Validators.email]}),
+    rating: new FormControl('', {validators: Validators.required}),
     comment: new FormControl(),
   });
 
