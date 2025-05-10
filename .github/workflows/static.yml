@@ -27,7 +27,7 @@ jobs:
     environment:
       name: github-pages
       # url: ${{ steps.deployment.outputs.page_url }}
-      url: ${{ https://sasha-si.github.io/angular-challenges/ }}
+      url: https://sasha-si.github.io/angular-challenges/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
