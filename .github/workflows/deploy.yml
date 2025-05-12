@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,11 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Angular app
-        run: npm run deploy #-- --configuration production --base-href=/your-repo-name/
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages  # The branch the action will deploy to
-          folder: dist/angular-challenges
+      - name: Deploy using angular-cli-ghpages
+        run: npx ng deploy --base-href=/angular-challenges/ --no-silent
+        env:
+          NG_CLI_ANALYTICS: "false"
