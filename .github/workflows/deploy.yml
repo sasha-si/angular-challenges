@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -21,12 +21,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Configure Git identity
+      - name: Build Angular App
+        run: npm run build -- --base-href=/angular-challenges/
+
+      - name: Configure Git
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/sasha-si/angular-challenges.git
 
-      - name: Deploy using angular-cli-ghpages
-        run: npx ng deploy --base-href=/angular-challenges/ --no-silent
+      - name: Deploy with ng deploy
+        run: npx ng deploy --no-silent
         env:
           NG_CLI_ANALYTICS: "false"
