@@ -14,15 +14,18 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class RatingControlComponent implements ControlValueAccessor {
   value: number | null = null;
+  disabled = false;
 
   private _onChange = (value: number) => {};
   private _onTouched = () => {};
 
 
   setRating(index: number): void {
-    this.writeValue(index + 1);
-    this._onChange(index + 1);
-    this._onTouched();
+    if (!this.disabled) {
+      this.writeValue(index + 1);
+      this._onChange(index + 1);
+      this._onTouched();
+    }
   }
 
   isStarActive(index: number, value: number | null): boolean {
@@ -40,5 +43,9 @@ export class RatingControlComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this._onTouched = fn;
+  }
+
+  setDisabledState(disabled: boolean) {
+    this.disabled = disabled;
   }
 }
