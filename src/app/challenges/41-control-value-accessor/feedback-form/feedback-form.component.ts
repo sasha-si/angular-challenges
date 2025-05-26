@@ -38,17 +38,7 @@ export class FeedbackFormComponent implements OnInit {
       [FeedbackFormKeys.comment]: [''],
     });
 
-    const emailControl = this.feedbackForm.get(FeedbackFormKeys.email);
-    const ratingControl = this.feedbackForm.get(FeedbackFormKeys.rating);
-
-    emailControl?.statusChanges.pipe(distinctUntilChanged()).subscribe(emailFieldStatus => {
-      if (emailFieldStatus === 'VALID') {
-        ratingControl?.enable();
-      } else if (emailFieldStatus === 'INVALID') {
-        ratingControl?.reset();//resets rating to initial value
-        ratingControl?.disable();
-      }
-    });
+    this._setEmailRequiredObserver();
   }
 
   submitForm(): void {
@@ -56,4 +46,18 @@ export class FeedbackFormComponent implements OnInit {
 
     this.feedbackForm.reset();
   }
+  
+  private _setEmailRequiredObserver(): void {
+    const emailControl = this.feedbackForm.get(FeedbackFormKeys.email);
+    const ratingControl = this.feedbackForm.get(FeedbackFormKeys.rating);
+
+    emailControl?.statusChanges.pipe(distinctUntilChanged()).subscribe(emailFieldStatus => {
+      if (emailFieldStatus === 'VALID') {
+        ratingControl?.enable();
+      } else if (emailFieldStatus === 'INVALID') {
+        ratingControl?.reset();
+        ratingControl?.disable();
+      }
+    });
+  };
 }
