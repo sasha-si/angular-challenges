@@ -4,8 +4,8 @@ import {ChallengesComponent} from './challenges/challenges.component';
 
 @Component({
   imports: [
-    SidenavComponent, 
-    ChallengesComponent, 
+    SidenavComponent,
+    ChallengesComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
