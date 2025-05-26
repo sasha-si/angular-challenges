@@ -1,29 +1,55 @@
-import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { RatingControlComponent } from '../rating-control/rating-control.component';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {RatingControlComponent} from '../rating-control/rating-control.component';
+import {distinctUntilChanged} from 'rxjs';
+
+enum FeedbackFormKeys {
+  name = "name",
+  email = "email",
+  rating = "rating",
+  comment = "comment",
+};
 
 @Component({
   imports: [
     RatingControlComponent,
     ReactiveFormsModule,
+    CommonModule
   ],
   selector: 'app-feedback-form',
   templateUrl: 'feedback-form.component.html',
   styleUrls: ['feedback-form.component.less'],
   standalone: true,
 })
-export class FeedbackFormComponent {
-  readonly feedbackForm = new FormGroup({
-    name: new FormControl('', {validators: [Validators.required, Validators.minLength(3)]}),
-    email: new FormControl('', {validators: [Validators.required, Validators.email]}),
-    rating: new FormControl('', {validators: Validators.required}),
-    comment: new FormControl(),
-  });
+export class FeedbackFormComponent implements OnInit {
+  feedbackForm!: FormGroup;
+  emailFieldStatusLast = '';
+
+  constructor(
+    private fb: FormBuilder,
+  ) {};
+
+  ngOnInit(): void {    
+    this.feedbackForm = this.fb.group({
+      [FeedbackFormKeys.name]: ['', [Validators.required, Validators.minLength(3)]],
+      [FeedbackFormKeys.email]: ['', [Validators.required, Validators.email]],
+      [FeedbackFormKeys.rating]: [{value: '', disabled: true}, [Validators.required]],
+      [FeedbackFormKeys.comment]: [''],
+    });
+
+    const emailControl = this.feedbackForm.get(FeedbackFormKeys.email);
+    const ratingControl = this.feedbackForm.get(FeedbackFormKeys.rating);
+
+    emailControl?.statusChanges.pipe(distinctUntilChanged()).subscribe(emailFieldStatus => {
+      if (emailFieldStatus === 'VALID') {
+        ratingControl?.enable();
+      } else if (emailFieldStatus === 'INVALID') {
+        ratingControl?.reset();//resets rating to initial value
+        ratingControl?.disable();
+      }
+    });
+  }
 
   submitForm(): void {
     console.log(this.feedbackForm.value);
