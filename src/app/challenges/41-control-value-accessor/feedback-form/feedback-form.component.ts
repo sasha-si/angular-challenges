@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {RatingControlComponent} from '../rating-control/rating-control.component';
 import {distinctUntilChanged} from 'rxjs';
 
 enum FeedbackFormKeys {
   name = "name",
   email = "email",
+  emailConfirmation = "emailConfirmation",
   rating = "rating",
   comment = "comment",
 };
@@ -24,7 +25,6 @@ enum FeedbackFormKeys {
 })
 export class FeedbackFormComponent implements OnInit {
   feedbackForm!: FormGroup;
-  emailFieldStatusLast = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,12 +34,21 @@ export class FeedbackFormComponent implements OnInit {
     this.feedbackForm = this.fb.group({
       [FeedbackFormKeys.name]: ['', [Validators.required, Validators.minLength(3)]],
       [FeedbackFormKeys.email]: ['', [Validators.required, Validators.email]],
+      [FeedbackFormKeys.emailConfirmation]: ['', [Validators.required, Validators.email]],
       [FeedbackFormKeys.rating]: [{value: '', disabled: true}, [Validators.required]],
       [FeedbackFormKeys.comment]: [''],
-    });
+    }, {validators: this._emailConfirmationValidator});
 
     this._setEmailRequiredObserver();
   }
+
+  private _emailConfirmationValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
+    const emailControl = control.get(FeedbackFormKeys.email)?.value;
+    const emailConfirmationControl = control.get(FeedbackFormKeys.emailConfirmation)?.value;
+    return emailControl !== emailConfirmationControl ? {emailsNotMatch: true} : null;
+  };
 
   submitForm(): void {
     console.log(this.feedbackForm.value);

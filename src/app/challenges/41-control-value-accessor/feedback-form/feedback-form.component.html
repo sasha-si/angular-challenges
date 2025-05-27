@@ -12,7 +12,14 @@
     class="feedback-form--control"
     formControlName="email"
     placeholder="Email"
-    type="email" />
+    type="email"
+    [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
+  <input
+    class="feedback-form--control"
+    formControlName="emailConfirmation"
+    placeholder="Confirm your email"
+    type="email"
+    [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
   <app-rating-control formControlName="rating" />
   <textarea
     class="feedback-form--control"
