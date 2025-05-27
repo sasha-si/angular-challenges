@@ -3,28 +3,35 @@
   class="feedback-form"
   (ngSubmit)="submitForm()">
   <legend class="feedback-form--title">Tell us what you think</legend>
+
   <input
     class="feedback-form--control"
     formControlName="name"
     placeholder="Name"
     type="text" />
+
   <input
     class="feedback-form--control"
     formControlName="email"
     placeholder="Email"
     type="email"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
+  
   <input
     class="feedback-form--control"
     formControlName="emailConfirmation"
     placeholder="Confirm your email"
     type="email"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
+
   <app-rating-control formControlName="rating" />
+
   <textarea
     class="feedback-form--control"
     formControlName="comment"
-    placeholder="Сomment text"></textarea>
+    placeholder="Сomment text">
+  </textarea>
+
   <button
     class="feedback-form--submit"
     type="submit"
@@ -33,4 +40,5 @@
     ">
     Submit
   </button>
+  
 </form>
