@@ -61,12 +61,10 @@ export class FeedbackFormComponent implements OnInit {
     const ratingControl = this.feedbackForm.get(FeedbackFormKeys.rating);
 
     emailControl?.statusChanges.pipe(distinctUntilChanged()).subscribe(emailFieldStatus => {
-      if (emailFieldStatus === 'VALID') {
+      if (emailFieldStatus === 'VALID')
         ratingControl?.enable();
-      } else if (emailFieldStatus === 'INVALID') {
-        ratingControl?.reset();
-        ratingControl?.disable();
-      }
+        else if (emailFieldStatus === 'INVALID')
+          ratingControl?.reset({ value: '', disabled: true });
     });
   };
 }
