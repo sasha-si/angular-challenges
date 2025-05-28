@@ -1,16 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {RatingControlComponent} from '../rating-control/rating-control.component';
 import {distinctUntilChanged} from 'rxjs';
 
-enum FeedbackFormKeys {
-  name = "name",
-  email = "email",
-  emailConfirmation = "emailConfirmation",
-  rating = "rating",
-  comment = "comment",
-};
+import {RatingControlComponent} from '../rating-control/rating-control.component';
+import {FeedbackFormKeys} from './feedback-form.constants';
 
 @Component({
   imports: [
@@ -24,6 +18,7 @@ enum FeedbackFormKeys {
   standalone: true,
 })
 export class FeedbackFormComponent implements OnInit {
+  readonly FeedbackFormKeys = FeedbackFormKeys;
   feedbackForm!: FormGroup;
 
   constructor(

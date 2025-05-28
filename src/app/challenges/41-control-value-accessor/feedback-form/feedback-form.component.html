@@ -4,19 +4,53 @@
   (ngSubmit)="submitForm()">
   <legend class="feedback-form--title">Tell us what you think</legend>
 
+  <!-- Name FeedbackFormControl -->
+  @if (feedbackForm.get(FeedbackFormKeys.name)?.touched) {
+    <span class="feedback-form--error-message">
+      @if (feedbackForm.get(FeedbackFormKeys.name)?.hasError('required')) {
+        Required field
+      } @else if (feedbackForm.get(FeedbackFormKeys.name)?.hasError('minlength')) {
+        Minimum 3 letters name length
+      }
+    </span>
+  }
   <input
     class="feedback-form--control"
     formControlName="name"
     placeholder="Name"
     type="text" />
 
+  <!-- Email FeedbackFormControl -->
+  @if (feedbackForm.get(FeedbackFormKeys.email)?.touched) {
+    <span class="feedback-form--error-message">
+      @if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('required')) {
+        Required field
+      } @else if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('email')) {
+        Invalid email address
+      } @else if (feedbackForm.hasError('emailsNotMatch')) {
+        Emails not match
+      }
+    </span>
+  }
   <input
     class="feedback-form--control"
     formControlName="email"
     placeholder="Email"
     type="email"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
-  
+
+  <!-- EmailConfirmation FeedbackFormControl -->
+  @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.touched) {
+    <span class="feedback-form--error-message">
+      @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.hasError('required')) {
+        Required field
+      } @else if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.hasError('email')) {
+        Invalid email address
+      } @else if (feedbackForm.hasError('emailsNotMatch')) {
+        Emails not match
+      }
+    </span>
+  }
   <input
     class="feedback-form--control"
     formControlName="emailConfirmation"
@@ -24,8 +58,11 @@
     type="email"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
 
+  <!-- Rating FeedbackFormControl -->
+  <!-- {{feedbackForm.get(FeedbackFormKeys.rating)?.errors | json}} -->
   <app-rating-control formControlName="rating" />
 
+  <!-- Comment FeedbackFormControl -->
   <textarea
     class="feedback-form--control"
     formControlName="comment"
