@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {distinctUntilChanged} from 'rxjs';
+import {tap} from 'rxjs';
 
 import {RatingControlComponent} from '../rating-control/rating-control.component';
 import {FeedbackFormKeys} from './feedback-form.constants';
@@ -54,12 +54,24 @@ export class FeedbackFormComponent implements OnInit {
   private _setEmailRequiredObserver(): void {
     const emailControl = this.feedbackForm.get(FeedbackFormKeys.email);
     const ratingControl = this.feedbackForm.get(FeedbackFormKeys.rating);
+  
+    if (!emailControl || !ratingControl) return;
+  
+    this.feedbackForm.valueChanges.pipe(
+      tap(() => {
+        const hasError = this.feedbackForm.hasError('emailsNotMatch');
+        const emailValid = emailControl.valid;
 
-    emailControl?.statusChanges.pipe(distinctUntilChanged()).subscribe(emailFieldStatus => {
-      if (emailFieldStatus === 'VALID')
-        ratingControl?.enable();
-        else if (emailFieldStatus === 'INVALID')
-          ratingControl?.reset({ value: '', disabled: true });
-    });
-  };
+        if (!hasError && emailValid) {
+          if (ratingControl.disabled) {
+            ratingControl.enable();
+          }
+        } else {
+          if (ratingControl.enabled) {
+            ratingControl.reset({ value: '', disabled: true });
+          }
+        }
+      })
+    ).subscribe();
+  }
 }

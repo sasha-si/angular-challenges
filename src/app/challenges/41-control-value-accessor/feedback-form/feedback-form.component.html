@@ -55,11 +55,10 @@
     class="feedback-form--control"
     formControlName="emailConfirmation"
     placeholder="Confirm your email"
-    type="email"
+    type="password"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
 
   <!-- Rating FeedbackFormControl -->
-  <!-- {{feedbackForm.get(FeedbackFormKeys.rating)?.errors | json}} -->
   <app-rating-control formControlName="rating" />
 
   <!-- Comment FeedbackFormControl -->

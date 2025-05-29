@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
@@ -14,14 +14,14 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class RatingControlComponent implements ControlValueAccessor {
   value: number | null = null;
-  disabled = false;
+  disabled = signal(false);
 
   private _onChange = (value: number) => {};
   private _onTouched = () => {};
 
 
   setRating(index: number): void {
-    if (!this.disabled) {
+    if (!this.disabled()) {
       this.writeValue(index + 1);
       this._onChange(index + 1);
       this._onTouched();
@@ -46,6 +46,6 @@ export class RatingControlComponent implements ControlValueAccessor {
   }
 
   setDisabledState(disabled: boolean) {
-    this.disabled = disabled;
+    this.disabled.set(disabled);
   }
 }
