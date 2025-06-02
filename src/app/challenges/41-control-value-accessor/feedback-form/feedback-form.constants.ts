@@ -4,4 +4,5 @@ export enum FeedbackFormKeys {
   emailConfirmation = "emailConfirmation",
   rating = "rating",
   comment = "comment",
+  extraControls = "extraControls",
 };

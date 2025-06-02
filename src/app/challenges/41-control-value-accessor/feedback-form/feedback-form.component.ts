@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {tap} from 'rxjs';
 
 import {RatingControlComponent} from '../rating-control/rating-control.component';
@@ -21,6 +21,10 @@ export class FeedbackFormComponent implements OnInit {
   readonly FeedbackFormKeys = FeedbackFormKeys;
   feedbackForm!: FormGroup;
 
+  get extraControls() {
+    return this.feedbackForm.get('extraControls') as FormArray;
+  }
+
   constructor(
     private fb: FormBuilder,
   ) {};
@@ -32,7 +36,9 @@ export class FeedbackFormComponent implements OnInit {
       [FeedbackFormKeys.emailConfirmation]: ['', [Validators.required, Validators.email]],
       [FeedbackFormKeys.rating]: [{value: '', disabled: true}, [Validators.required]],
       [FeedbackFormKeys.comment]: [''],
-    }, {validators: this._emailConfirmationValidator});
+      // Extra controls array
+      [FeedbackFormKeys.extraControls]: this.fb.array([]),
+    }, {validators: this._emailConfirmationValidator}),
 
     this._setEmailRequiredObserver();
   }
@@ -46,9 +52,12 @@ export class FeedbackFormComponent implements OnInit {
   };
 
   submitForm(): void {
-    console.log(this.feedbackForm.value);
-
+    alert(JSON.stringify(this.feedbackForm.value));
     this.feedbackForm.reset();
+  }
+
+  addExtraControl() {
+    this.extraControls.push(this.fb.control(''));
   }
   
   private _setEmailRequiredObserver(): void {
