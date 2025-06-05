@@ -56,8 +56,9 @@ export class FeedbackFormComponent implements OnInit {
     this.feedbackForm.reset();
   }
 
-  addExtraControl() {
-    this.extraControls.push(this.fb.control(''));
+  addExtraControl(): void {
+    if (this.extraControls.length < 5)
+      this.extraControls.push(this.fb.control(''));
   }
   
   private _setEmailRequiredObserver(): void {
