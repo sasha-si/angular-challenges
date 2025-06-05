@@ -70,7 +70,7 @@
 
   <!-- Extra controls array -->
   <div formArrayName="extraControls">
-    <div>Extra fields</div>
+    <div class="feedback-form--extra-controls--title">Extra fields</div>
     @for (extraControl of extraControls.controls; track $index; let i = $index) {
       <input
         id="extra-control-{{ i }}"
@@ -81,7 +81,7 @@
     }
     
     <button
-      class="button feedback-form--add-input"
+      class="button feedback-form--extra-controls--add-input"
       type="button"
       (click)="addExtraControl()">
         Add your field
