@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {tap} from 'rxjs';
+import {debounceTime, delay, filter, of, switchMap, tap} from 'rxjs';
 
 import {RatingControlComponent} from '../rating-control/rating-control.component';
 import {FeedbackFormKeys} from './feedback-form.constants';
@@ -41,6 +41,7 @@ export class FeedbackFormComponent implements OnInit {
     }, {validators: this._emailConfirmationValidator}),
 
     this._setEmailRequiredObserver();
+    this._setFormSubmitObserver();
   }
 
   private _emailConfirmationValidator: ValidatorFn = (
@@ -81,7 +82,20 @@ export class FeedbackFormComponent implements OnInit {
             ratingControl.reset({ value: '', disabled: true });
           }
         }
-      })
+      }),
     ).subscribe();
+  }
+
+  private _setFormSubmitObserver():void {
+    this.feedbackForm.valueChanges.pipe(
+      debounceTime(1500),
+      filter(() => this.feedbackForm.touched && this.feedbackForm.valid),
+    ).subscribe(() => {
+      alert(JSON.stringify(this.feedbackForm.value));
+    });
+  }
+  
+  resetForm(): void {
+    this.feedbackForm.reset();
   }
 }

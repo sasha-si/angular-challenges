@@ -84,17 +84,14 @@
       class="button feedback-form--extra-controls--add-input"
       type="button"
       (click)="addExtraControl()">
-        Add your field
+        Add extra field
     </button>
-  </div>
+  </div>  
 
   <button
-    class="button feedback-form--submit"
-    type="submit"
-    [disabled]="
-      !feedbackForm.touched || feedbackForm.invalid
-    ">
-      Submit
+    class="button feedback-form--reset"
+    type="button"
+    (click)="resetForm()">
+      Clean the form
   </button>
-  
 </form>
