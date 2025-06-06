@@ -5,7 +5,7 @@
   <legend class="feedback-form--title">Tell us what you think</legend>
 
   <!-- Name FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.name)?.touched) {
+  @if (feedbackForm.get(FeedbackFormKeys.name)?.touched && feedbackForm.get(FeedbackFormKeys.name)?.invalid) {
     <span class="feedback-form--error-message">
       @if (feedbackForm.get(FeedbackFormKeys.name)?.hasError('required')) {
         Required field
@@ -16,12 +16,12 @@
   }
   <input
     class="feedback-form--control"
-    formControlName="name"
+    [formControlName]="FeedbackFormKeys.name"
     placeholder="Name"
     type="text" />
 
   <!-- Email FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.email)?.touched) {
+  @if (feedbackForm.get(FeedbackFormKeys.email)?.touched && feedbackForm.hasError('emailsNotMatch')) {
     <span class="feedback-form--error-message">
       @if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('required')) {
         Required field
@@ -34,13 +34,13 @@
   }
   <input
     class="feedback-form--control"
-    formControlName="email"
+    [formControlName]="FeedbackFormKeys.email"
     placeholder="Email"
     type="email"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
 
   <!-- EmailConfirmation FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.touched) {
+  @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.touched && feedbackForm.hasError('emailsNotMatch')) {
     <span class="feedback-form--error-message">
       @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.hasError('required')) {
         Required field
@@ -53,18 +53,18 @@
   }
   <input
     class="feedback-form--control"
-    formControlName="emailConfirmation"
+    [formControlName]="FeedbackFormKeys.emailConfirmation"
     placeholder="Confirm your email"
     type="password"
     [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
 
   <!-- Rating FeedbackFormControl -->
-  <app-rating-control formControlName="rating" />
+  <app-rating-control [formControlName]="FeedbackFormKeys.rating" />
 
   <!-- Comment FeedbackFormControl -->
   <textarea
     class="feedback-form--control"
-    formControlName="comment"
+    [formControlName]="FeedbackFormKeys.comment"
     placeholder="Сomment text">
   </textarea>
 
