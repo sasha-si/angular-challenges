@@ -18,17 +18,16 @@
     class="feedback-form--control"
     [formControlName]="FeedbackFormKeys.name"
     placeholder="Name"
-    type="text" />
+    type="text"
+  />
 
   <!-- Email FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.email)?.touched && feedbackForm.hasError('emailsNotMatch')) {
+  @if (feedbackForm.get(FeedbackFormKeys.email)?.touched) {
     <span class="feedback-form--error-message">
       @if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('required')) {
         Required field
       } @else if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('email')) {
         Invalid email address
-      } @else if (feedbackForm.hasError('emailsNotMatch')) {
-        Emails not match
       }
     </span>
   }
@@ -37,10 +36,10 @@
     [formControlName]="FeedbackFormKeys.email"
     placeholder="Email"
     type="email"
-    [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
+  />
 
   <!-- EmailConfirmation FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.touched && feedbackForm.hasError('emailsNotMatch')) {
+  @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.touched) {
     <span class="feedback-form--error-message">
       @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.hasError('required')) {
         Required field
@@ -55,8 +54,9 @@
     class="feedback-form--control"
     [formControlName]="FeedbackFormKeys.emailConfirmation"
     placeholder="Confirm your email"
-    type="password"
-    [class.not-match]="feedbackForm.hasError('emailsNotMatch')" />
+    type="email"
+    [class.not-match]="feedbackForm.hasError('emailsNotMatch')"
+  />
 
   <!-- Rating FeedbackFormControl -->
   <app-rating-control [formControlName]="FeedbackFormKeys.rating" />
@@ -65,11 +65,11 @@
   <textarea
     class="feedback-form--control"
     [formControlName]="FeedbackFormKeys.comment"
-    placeholder="Сomment text">
+    placeholder="Comment text">
   </textarea>
 
   <!-- Extra controls array -->
-  <div formArrayName="extraControls">
+  <div class="feedback-form--extra-controls" formArrayName="extraControls">
     <div class="feedback-form--extra-controls--title">Extra fields</div>
     @for (extraControl of extraControls.controls; track $index; let i = $index) {
       <input
@@ -79,13 +79,23 @@
         [formControlName]="i"
       />
     }
-    
+    @let extraControlsArr = feedbackForm.get(FeedbackFormKeys.extraControls);
     <button
       class="button feedback-form--extra-controls--add-input"
+      [class.disabled]="extraControlsArr?.hasError('lastExtraControlNotFilled') || extraControlsArr?.hasError('maxlength')"
       type="button"
+      [disabled]="extraControlsArr?.hasError('lastExtraControlNotFilled') || extraControlsArr?.hasError('maxlength')"
       (click)="addExtraControl()">
-        Add extra field
+      Add extra field
     </button>
+    <span class="feedback-form--error-message">
+      @if (extraControlsArr?.hasError('lastExtraControlNotFilled')) {
+        Fill the field to add more fields
+      }
+      @else if (extraControlsArr?.hasError('maxlength')) {
+        The limit of extra fields is reached
+      }
+    </span>
   </div>  
 
   <button

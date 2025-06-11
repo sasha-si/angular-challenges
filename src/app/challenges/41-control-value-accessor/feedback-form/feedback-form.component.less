@@ -62,14 +62,8 @@
     }
   }
   
-  &--submit {
-    padding: 10px;
-    background-color: #054ada;
-    
-    &[disabled] {
-      background-color: #cccccc;
-      color: #ffffff;
-    }
+  &--reset {
+    padding: 2px;
   }
 }
 
@@ -78,4 +72,10 @@
   border-radius: 10px;
   cursor: pointer;
   color: #3c3c3c;
+
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }

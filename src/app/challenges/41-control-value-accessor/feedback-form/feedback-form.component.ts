@@ -37,20 +37,12 @@ export class FeedbackFormComponent implements OnInit {
       [FeedbackFormKeys.rating]: [{value: '', disabled: true}, [Validators.required]],
       [FeedbackFormKeys.comment]: [''],
       // Extra controls array
-      [FeedbackFormKeys.extraControls]: this.fb.array([]),
+      [FeedbackFormKeys.extraControls]: this.fb.array([], [Validators.maxLength(4), this._lastExtraControlFilledValidator]),
     }, {validators: this._emailConfirmationValidator}),
 
     this._setEmailRequiredObserver();
     this._setFormSubmitObserver();
   }
-
-  private _emailConfirmationValidator: ValidatorFn = (
-    control: AbstractControl,
-  ): ValidationErrors | null => {
-    const emailControl = control.get(FeedbackFormKeys.email)?.value;
-    const emailConfirmationControl = control.get(FeedbackFormKeys.emailConfirmation)?.value;
-    return emailControl !== emailConfirmationControl ? {emailsNotMatch: true} : null;
-  };
 
   submitForm(): void {
     alert(JSON.stringify(this.feedbackForm.value));
@@ -96,6 +88,31 @@ export class FeedbackFormComponent implements OnInit {
   }
   
   resetForm(): void {
+    const extraControls = this.feedbackForm.get(FeedbackFormKeys.extraControls) as FormArray;
+
+    if (extraControls) {
+      extraControls.clear();
+    }
+
     this.feedbackForm.reset();
   }
+
+  // #region Custom validators
+  private _emailConfirmationValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
+    const emailControl = control.get(FeedbackFormKeys.email)?.value;
+    const emailConfirmationControl = control.get(FeedbackFormKeys.emailConfirmation)?.value;
+    return emailControl !== emailConfirmationControl ? {emailsNotMatch: true} : null;
+  };
+
+  private _lastExtraControlFilledValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
+    if (!control.value.length) return null;
+    
+    const lastExtraControlFilled = !control.value.some((el: string) => el === '');
+    return lastExtraControlFilled  ? null : {lastExtraControlNotFilled: true};
+  };
+  // #endregion
 }

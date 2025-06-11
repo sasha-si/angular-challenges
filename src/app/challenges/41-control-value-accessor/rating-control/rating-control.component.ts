@@ -32,7 +32,7 @@ export class RatingControlComponent implements ControlValueAccessor {
     return value ? index < value : false;
   }
 
-  //ControlValueAccessor methods
+  // #region ControlValueAccessor methods
   writeValue(index: number): void {
     this.value = index;
   }
@@ -48,4 +48,5 @@ export class RatingControlComponent implements ControlValueAccessor {
   setDisabledState(disabled: boolean) {
     this.disabled.set(disabled);
   }
+  // #endregion
 }
