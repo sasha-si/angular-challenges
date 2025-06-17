@@ -24,6 +24,16 @@
     color: #ff0000;
     padding: 5px 20px;
   }
+
+  &--control-container {
+    position: relative;
+    
+      &.rating {
+        border: 1px dashed #ffd055;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+  }
   
   &--control {
     width: 100%;
@@ -78,4 +88,13 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+}
+
+.required::after {
+  content: "*";
+  color: #ff0000;
+  font-size: 35px;
+  position: absolute;
+  top: 0;
+  right: 5px;
 }

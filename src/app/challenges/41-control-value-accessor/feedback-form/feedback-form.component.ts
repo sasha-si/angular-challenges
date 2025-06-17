@@ -101,9 +101,12 @@ export class FeedbackFormComponent implements OnInit {
   private _emailConfirmationValidator: ValidatorFn = (
     control: AbstractControl,
   ): ValidationErrors | null => {
-    const emailControl = control.get(FeedbackFormKeys.email)?.value;
-    const emailConfirmationControl = control.get(FeedbackFormKeys.emailConfirmation)?.value;
-    return emailControl !== emailConfirmationControl ? {emailsNotMatch: true} : null;
+    const emailControl = control.get(FeedbackFormKeys.email);
+    const emailConfirmationControl = control.get(FeedbackFormKeys.emailConfirmation);
+
+    if (emailControl?.invalid || emailConfirmationControl?.invalid) return null;
+
+    return emailControl?.value !== emailConfirmationControl?.value ? {emailsNotMatch: true} : null;
   };
 
   private _lastExtraControlFilledValidator: ValidatorFn = (

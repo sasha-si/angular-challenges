@@ -4,64 +4,85 @@
   (ngSubmit)="submitForm()">
   <legend class="feedback-form--title">Tell us what you think</legend>
 
-  <!-- Name FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.name)?.touched && feedbackForm.get(FeedbackFormKeys.name)?.invalid) {
+  <!-- Name form field -->
+  @let name = feedbackForm.get(FeedbackFormKeys.name);
+
+  @if (name?.touched && name?.invalid) {
     <span class="feedback-form--error-message">
-      @if (feedbackForm.get(FeedbackFormKeys.name)?.hasError('required')) {
+      @if (name?.hasError('required')) {
         Required field
-      } @else if (feedbackForm.get(FeedbackFormKeys.name)?.hasError('minlength')) {
+      } @else if (name?.hasError('minlength')) {
         Minimum 3 letters name length
       }
     </span>
   }
-  <input
-    class="feedback-form--control"
-    [formControlName]="FeedbackFormKeys.name"
-    placeholder="Name"
-    type="text"
-  />
+  <div class="feedback-form--control-container" [class.required]="!!name?.invalid">
+    <input
+      class="feedback-form--control"
+      [formControlName]="FeedbackFormKeys.name"
+      placeholder="Name"
+      type="text"
+    />
+  </div>
 
-  <!-- Email FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.email)?.touched) {
+  <!-- Email form field -->
+  @let email = feedbackForm.get(FeedbackFormKeys.email);
+
+  @if (email?.touched && email?.invalid) {
     <span class="feedback-form--error-message">
-      @if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('required')) {
+      @if (email?.hasError('required')) {
         Required field
-      } @else if (feedbackForm.get(FeedbackFormKeys.email)?.hasError('email')) {
+      } @else if (email?.hasError('email')) {
         Invalid email address
       }
     </span>
   }
-  <input
-    class="feedback-form--control"
-    [formControlName]="FeedbackFormKeys.email"
-    placeholder="Email"
-    type="email"
-  />
+  <div class="feedback-form--control-container" [class.required]="!!email?.invalid">
+    <input
+      class="feedback-form--control"
+      [formControlName]="FeedbackFormKeys.email"
+      placeholder="Email"
+      type="email"
+    />
+  </div>
 
-  <!-- EmailConfirmation FeedbackFormControl -->
-  @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.touched) {
+  <!-- EmailConfirmation form field -->
+  @let emailConfirmation = feedbackForm.get(FeedbackFormKeys.emailConfirmation);
+
+  @if (emailConfirmation?.touched && emailConfirmation?.invalid) {
     <span class="feedback-form--error-message">
-      @if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.hasError('required')) {
+      @if (emailConfirmation?.hasError('required')) {
         Required field
-      } @else if (feedbackForm.get(FeedbackFormKeys.emailConfirmation)?.hasError('email')) {
+      } @else if (emailConfirmation?.hasError('email')) {
         Invalid email address
-      } @else if (feedbackForm.hasError('emailsNotMatch')) {
-        Emails not match
       }
     </span>
+  } @else if (feedbackForm.hasError('emailsNotMatch')) {
+    <span class="feedback-form--error-message">
+      Emails not match
+    </span>
   }
-  <input
-    class="feedback-form--control"
-    [formControlName]="FeedbackFormKeys.emailConfirmation"
-    placeholder="Confirm your email"
-    type="email"
-    [class.not-match]="feedbackForm.hasError('emailsNotMatch')"
-  />
+  <div class="feedback-form--control-container" [class.required]="!!emailConfirmation?.invalid">
+    <input
+      class="feedback-form--control"
+      [formControlName]="FeedbackFormKeys.emailConfirmation"
+      placeholder="Confirm your email"
+      type="email"
+      [class.not-match]="feedbackForm.hasError('emailsNotMatch')"
+    />
+  </div>
 
-  <!-- Rating FeedbackFormControl -->
-  <app-rating-control [formControlName]="FeedbackFormKeys.rating" />
+  <!-- Rating form field -->
+  <div
+    class="feedback-form--control-container rating"
+    [class.required]="!!feedbackForm.get(FeedbackFormKeys.rating)?.invalid"
+  >
+    <app-rating-control
+      [formControlName]="FeedbackFormKeys.rating"
+    />
+  </div>
 
-  <!-- Comment FeedbackFormControl -->
+  <!-- Comment form field -->
   <textarea
     class="feedback-form--control"
     [formControlName]="FeedbackFormKeys.comment"
